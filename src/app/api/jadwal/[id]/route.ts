@@ -1,16 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { dbConnect } from "@/lib/dbConnect";
 import MataKuliahModel from "@/models/datakuliah";
 import { MataKuliah } from "@/types/jadwal"; // Import interface MataKuliah
 
 export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } },
+  request: NextRequest,
+  context: { params: { id: string } },
 ) {
   await dbConnect();
 
   try {
-    const { id } = params;
+    const { id } = context.params;
 
     const body: Partial<MataKuliah> = await request.json();
 
