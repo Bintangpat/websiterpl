@@ -7,8 +7,6 @@ import React, { useState, useEffect } from "react";
 import { MataKuliah, DosenStatus } from "@/types/jadwal";
 import CardJadwal from "@/components/cardJadwal";
 
-// --- Helper Functions ---
-// Fungsi untuk menentukan warna berdasarkan status
 const getStatusColor = (status: DosenStatus) => {
   switch (status) {
     case "Masuk":
@@ -24,12 +22,10 @@ const getStatusColor = (status: DosenStatus) => {
 };
 
 export default function Home() {
-  // PERBAIKAN: Inisialisasi state dengan array kosong, karena data akan diambil dari API.
   const [jadwal, setJadwal] = useState<MataKuliah[]>([]);
 
   const fetchJadwal = async () => {
     try {
-      // Endpoint API GET untuk semua jadwal
       const response = await fetch("/api/jadwal");
       const data = await response.json();
       setJadwal(data);
@@ -39,7 +35,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchJadwal(); // Ambil data saat komponen pertama kali dimuat
+    fetchJadwal();
   }, []);
 
   const updateJadwalItem = async (
@@ -54,7 +50,6 @@ export default function Home() {
       });
 
       if (response.ok) {
-        // Setelah berhasil di-update di DB, ambil ulang semua data (Re-fetch)
         fetchJadwal();
       } else {
         console.error("Gagal mengupdate item jadwal.");
@@ -64,10 +59,6 @@ export default function Home() {
     }
   };
 
-  // Catatan: Fungsi updateStatus dan updateTugas sebelumnya sudah dihapus
-  // karena sudah diganti dengan updateJadwalItem.
-
-  // Kita kelompokkan jadwal per hari untuk tampilan yang lebih rapi
   const jadwalPerHari = jadwal.reduce(
     (acc, mk) => {
       if (!acc[mk.hari]) acc[mk.hari] = [];
@@ -102,10 +93,9 @@ export default function Home() {
               </h2>
               <div className="space-y-4">
                 {mkHariIni.map((mk) => {
-                  // PERBAIKAN: Tidak perlu menghitung originalIndex lagi
                   return (
                     <CardJadwal
-                      key={mk._id} // Menggunakan _id sebagai key
+                      key={mk._id}
                       mataKuliah={mk}
                       updateJadwalItem={updateJadwalItem}
                       getStatusColor={getStatusColor}

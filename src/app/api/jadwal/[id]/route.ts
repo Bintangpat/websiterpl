@@ -1,8 +1,7 @@
-// app/api/jadwal/[id]/route.ts (Untuk update data berdasarkan ID)
-
 import { NextResponse } from "next/server";
 import { dbConnect } from "@/lib/dbConnect";
 import MataKuliahModel from "@/models/datakuliah";
+import { MataKuliah } from "@/types/jadwal"; // Import interface MataKuliah
 
 export async function PUT(
   request: Request,
@@ -11,17 +10,18 @@ export async function PUT(
   await dbConnect();
 
   try {
-    const { id } = await params;
+    const { id } = params;
 
-    // Ambil semua data yang mungkin di-update dari body
-    const { statusDosen, tugas, ruangan } = await request.json();
+    const body: Partial<MataKuliah> = await request.json();
 
-    const updateFields: any = {};
+    const { statusDosen, tugas, ruangan } = body;
+
+    const updateFields: Partial<MataKuliah> = {};
+
     if (statusDosen) updateFields.statusDosen = statusDosen;
     if (tugas !== undefined) updateFields.tugas = tugas;
     if (ruangan) updateFields.ruangan = ruangan;
 
-    // Cari berdasarkan ID dan update data
     const updatedMataKuliah = await MataKuliahModel.findByIdAndUpdate(
       id,
       updateFields,
@@ -35,7 +35,6 @@ export async function PUT(
       );
     }
 
-    // Mengembalikan data yang sudah di-update
     return NextResponse.json(updatedMataKuliah, { status: 200 });
   } catch (error) {
     console.error(error);

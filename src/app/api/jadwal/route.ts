@@ -5,10 +5,7 @@ import { dbConnect } from "@/lib/dbConnect";
 import MataKuliahModel from "@/models/datakuliah";
 
 // --- GET (READ ALL) ---
-/**
- * Mengambil semua data jadwal kuliah dari database.
- * Endpoint ini digunakan oleh fetchJadwal() di frontend.
- */
+
 export async function GET() {
   await dbConnect();
 
@@ -29,17 +26,13 @@ export async function GET() {
 }
 
 // --- POST (CREATE) ---
-/**
- * Menambahkan data mata kuliah baru ke database.
- * (Fitur opsional jika Anda ingin menambah jadwal baru dari dashboard)
- */
+
 export async function POST(request: Request) {
   await dbConnect();
 
   try {
     const body = await request.json();
 
-    // Membuat dokumen baru berdasarkan body request
     const newMataKuliah = await MataKuliahModel.create(body);
 
     return NextResponse.json(newMataKuliah, { status: 201 }); // 201 Created
