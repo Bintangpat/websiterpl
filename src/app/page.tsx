@@ -3,6 +3,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { ModeToggle } from "@/components/ModeToggle";
 
 import { MataKuliah, DosenStatus } from "@/types/jadwal";
 import CardJadwal from "@/components/cardJadwal";
@@ -76,9 +77,10 @@ export default function Home() {
         <h1 className="dark:text-accent-foreground text-4xl font-extrabold text-indigo-700">
           Jadwal Kuliah RPL Semester 5
         </h1>
-        <p className="text-accent-foreground mt-2 text-lg">
+        <p className="text-accent-foreground my-2 text-lg">
           Manajemen Status Dosen, Ruangan, dan Tugas
         </p>
+        <ModeToggle />
       </header>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
