@@ -1,23 +1,21 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/dbConnect";
 import MataKuliahModel from "@/models/datakuliah";
-import { MataKuliah } from "@/types/jadwal"; // Import interface MataKuliah
+import { MataKuliah } from "@/types/jadwal";
 
 export async function PUT(
   request: NextRequest,
-  context: { params: { id: string } },
+  context: { params: Promise<{ id: string }> },
 ) {
   await dbConnect();
 
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
 
     const body: Partial<MataKuliah> = await request.json();
-
     const { statusDosen, tugas, ruangan } = body;
 
     const updateFields: Partial<MataKuliah> = {};
-
     if (statusDosen) updateFields.statusDosen = statusDosen;
     if (tugas !== undefined) updateFields.tugas = tugas;
     if (ruangan) updateFields.ruangan = ruangan;
@@ -36,7 +34,7 @@ export async function PUT(
     }
 
     return NextResponse.json(updatedMataKuliah, { status: 200 });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error(error);
     return NextResponse.json(
       { message: "Gagal mengupdate data" },
