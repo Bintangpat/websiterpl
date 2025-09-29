@@ -29,8 +29,12 @@ export default function CardJadwal({
   getStatusColor,
 }: CardJadwalProps) {
   const [isEditingTugas, setIsEditingTugas] = useState(false);
+  const [isEditingWaktu, setIsEditingWaktu] = useState(false);
+  const [isEditingRuangan, setIsEditingRuangan] = useState(false);
   // State lokal untuk input tugas (menggunakan nilai dari prop mataKuliah)
+  const [currentWaktu, setCurrentWaktu] = useState(mataKuliah.waktu);
   const [currentTugas, setCurrentTugas] = useState(mataKuliah.tugas);
+  const [currentRuangan, setCurrentRuangan] = useState(mataKuliah.ruangan);
 
   // Menggunakan fungsi helper untuk warna status
   const statusClasses = getStatusColor(mataKuliah.statusDosen);
@@ -46,6 +50,17 @@ export default function CardJadwal({
     // Memanggil fungsi update global untuk tugas
     updateJadwalItem(mataKuliah._id, { tugas: currentTugas });
     setIsEditingTugas(false);
+  };
+
+  const handleSaveWaktu = () => {
+    updateJadwalItem(mataKuliah._id, { waktu: currentWaktu });
+    setIsEditingWaktu(false);
+  };
+
+  const handleSaveRuangan = () => {
+    // Memanggil fungsi update global untuk tugas
+    updateJadwalItem(mataKuliah._id, { ruangan: currentRuangan });
+    setIsEditingRuangan(false);
   };
 
   // Catatan: Jika ingin menambahkan fitur Ruangan, tambahkan state isEditingRuangan
@@ -74,15 +89,64 @@ export default function CardJadwal({
             {mataKuliah.dosen}
           </span>
         </p>
-        <p className="flex items-center gap-2">
-          <FaClock className="text-indigo-400" /> Waktu: {mataKuliah.waktu}
-        </p>
-        <p className="flex items-center gap-2">
-          <FaCalendarCheck className="text-indigo-400" /> Ruangan:{" "}
-          <span className="text-accent-foreground font-medium">
-            {mataKuliah.ruangan}
-          </span>
-        </p>
+
+        {isEditingWaktu ? (
+          <div className="flex flex-row gap-2">
+            <input
+              type="text"
+              value={currentWaktu}
+              onChange={(e) => setCurrentWaktu(e.target.value)}
+              className="text-accent-foreground bg-accent w-full rounded border p-2 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+            <button
+              onClick={handleSaveWaktu}
+              className="rounded bg-indigo-500 px-3 py-1 text-sm text-white hover:bg-indigo-600"
+            >
+              Simpan
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-row justify-between">
+            <p className="flex items-center gap-2">
+              <FaClock className="text-indigo-400" /> Waktu: {mataKuliah.waktu}
+            </p>
+            <button
+              onClick={() => setIsEditingWaktu(true)}
+              className="text-xs font-medium text-indigo-500 hover:text-indigo-700"
+            >
+              Edit
+            </button>
+          </div>
+        )}
+        {isEditingRuangan ? (
+          <div className="flex flex-row gap-2">
+            <input
+              type="text"
+              value={currentRuangan}
+              onChange={(e) => setCurrentRuangan(e.target.value)}
+              className="text-accent-foreground bg-accent w-full rounded border p-2 text-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+            <button
+              onClick={handleSaveRuangan}
+              className="rounded bg-indigo-500 px-3 py-1 text-sm text-white hover:bg-indigo-600"
+            >
+              Simpan
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-row justify-between">
+            <p className="flex items-center gap-2">
+              <FaClock className="text-indigo-400" /> Ruangan:{" "}
+              <span className="font-semibold">{mataKuliah.ruangan}</span>
+            </p>
+            <button
+              onClick={() => setIsEditingRuangan(true)}
+              className="text-xs font-medium text-indigo-500 hover:text-indigo-700"
+            >
+              Edit
+            </button>
+          </div>
+        )}
       </div>
 
       <hr className="my-3 border-gray-200" />

@@ -13,12 +13,13 @@ export async function PUT(
     const { id } = await context.params;
 
     const body: Partial<MataKuliah> = await request.json();
-    const { statusDosen, tugas, ruangan } = body;
+    const { statusDosen, tugas, ruangan, waktu } = body;
 
     const updateFields: Partial<MataKuliah> = {};
     if (statusDosen) updateFields.statusDosen = statusDosen;
     if (tugas !== undefined) updateFields.tugas = tugas;
     if (ruangan) updateFields.ruangan = ruangan;
+    if (waktu) updateFields.waktu = waktu;
 
     const updatedMataKuliah = await MataKuliahModel.findByIdAndUpdate(
       id,
