@@ -12,7 +12,6 @@ const MataKuliahSchema = new Schema<MataKuliah>(
     waktu: { type: String, required: true },
     hari: { type: String, required: true },
 
-    // Status dan Tugas adalah field yang akan sering di-update
     statusDosen: { type: String, required: true },
     tugas: { type: String, default: "Belum ada tugas." },
     isEditable: { type: Boolean, default: true },
