@@ -136,7 +136,7 @@ export default function CardJadwal({
         ) : (
           <div className="flex flex-row justify-between">
             <p className="flex items-center gap-2">
-              <FaClock className="text-indigo-400" /> Ruangan:{" "}
+              <FaCalendarCheck className="text-indigo-400" /> Ruangan:{" "}
               <span className="font-semibold">{mataKuliah.ruangan}</span>
             </p>
             <button
